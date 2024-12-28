@@ -26,7 +26,7 @@ impl std::fmt::Display for Reg {
             Reg::R6 => 6,
             Reg::R7 => 7,
         };
-        write!(f, "{}", val)
+        write!(f, "{:<8}", val)
     }
 }
 
@@ -38,22 +38,22 @@ pub enum Address {
 
 #[derive(Debug)]
 pub struct RArgs {
-    reg_a: Reg,
-    reg_b: Reg,
-    dest_reg: Reg,
+    pub reg_a: Reg,
+    pub reg_b: Reg,
+    pub dest_reg: Reg,
 }
 
 #[derive(Debug)]
 pub struct LArgs {
-    reg_a: Reg,
-    reg_b: Reg,
-    addr: Address,
+    pub reg_a: Reg,
+    pub reg_b: Reg,
+    pub addr: Address,
 }
 
 #[derive(Debug)]
 pub struct JArgs {
-    reg_a: Reg,
-    reg_b: Reg,
+    pub reg_a: Reg,
+    pub reg_b: Reg,
 }
 
 #[derive(Debug)]
@@ -70,15 +70,16 @@ pub enum Instr {
 }
 
 pub struct AsmLine {
-    label: String,
-    instr: Instr,
+    pub label: String,
+    pub instr: Instr,
 }
 
 pub fn addr_to_string(addr: &Address) -> String {
-    match addr {
+    let s = match addr {
         Address::Symbolic(s) => s.to_string(),
         Address::Numeric(n) => n.to_string(),
-    }
+    };
+    return format!("{:<8}",s);
 }
 
 pub fn r_arg_to_string(arg: &RArgs) -> String {
@@ -110,7 +111,6 @@ pub fn output_instr(instr: &Instr) -> String {
         Instr::Noop => format!("{:<8}", "noop"),
         Instr::Halt => format!("{:<8}", "halt"),
     };
-    // return format!({
 }
 
 //implementing independent of display trait for now
