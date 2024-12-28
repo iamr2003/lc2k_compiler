@@ -31,7 +31,7 @@ impl std::fmt::Display for Reg {
 }
 
 #[derive(Debug)]
-pub enum Address {
+pub enum Offset {
     Symbolic(String),
     Numeric(i8),
 }
@@ -47,7 +47,7 @@ pub struct RArgs {
 pub struct LArgs {
     pub reg_a: Reg,
     pub reg_b: Reg,
-    pub addr: Address,
+    pub addr: Offset,
 }
 
 #[derive(Debug)]
@@ -64,7 +64,7 @@ pub enum Instr {
     Sw(LArgs),
     Beq(LArgs),
     Jalr(JArgs),
-    Fill(Address),
+    Fill(Offset),
     Noop,
     Halt,
 }
@@ -74,10 +74,10 @@ pub struct AsmLine {
     pub instr: Instr,
 }
 
-pub fn addr_to_string(addr: &Address) -> String {
+pub fn addr_to_string(addr: &Offset) -> String {
     let s = match addr {
-        Address::Symbolic(s) => s.to_string(),
-        Address::Numeric(n) => n.to_string(),
+        Offset::Symbolic(s) => s.to_string(),
+        Offset::Numeric(n) => n.to_string(),
     };
     return format!("{:<8}",s);
 }
