@@ -2,7 +2,7 @@
 
 use std::fmt;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Reg {
     R0, // not enforced, but no one should change register 0 value
     R1,
@@ -30,33 +30,33 @@ impl std::fmt::Display for Reg {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Offset {
     Symbolic(String),
     Numeric(i8),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct RArgs {
     pub reg_a: Reg,
     pub reg_b: Reg,
     pub dest_reg: Reg,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct LArgs {
     pub reg_a: Reg,
     pub reg_b: Reg,
     pub addr: Offset,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct JArgs {
     pub reg_a: Reg,
     pub reg_b: Reg,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Instr {
     Add(RArgs),
     Nor(RArgs),
@@ -69,6 +69,7 @@ pub enum Instr {
     Halt,
 }
 
+#[derive(Debug, Clone)]
 pub struct AsmLine {
     pub label: String,
     pub instr: Instr,
@@ -79,7 +80,7 @@ pub fn addr_to_string(addr: &Offset) -> String {
         Offset::Symbolic(s) => s.to_string(),
         Offset::Numeric(n) => n.to_string(),
     };
-    return format!("{:<8}",s);
+    return format!("{:<8}", s);
 }
 
 pub fn r_arg_to_string(arg: &RArgs) -> String {

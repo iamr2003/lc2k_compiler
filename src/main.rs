@@ -1,4 +1,8 @@
+mod ast;
+mod cimple;
+mod cimple_compiler;
 mod lc2k;
+use cimple_compiler::compile;
 use lc2k::{AsmLine, Instr, JArgs, LArgs, Offset, RArgs, Reg};
 
 // figure out how to do proper import later
@@ -69,5 +73,11 @@ fn main() {
         },
     ];
 
-    println!("{}", lc2k::output_asm_lines(instrs));
+    // println!("{}", lc2k::output_asm_lines(instrs));
+
+    let expr = cimple::ExprParser::new().parse("22 + 33 + 24").unwrap();
+
+    // println!("{:?}", expr);
+
+    print!("{}", lc2k::output_asm_lines(compile(*expr).to_vec()));
 }

@@ -7,3 +7,8 @@ edition = "2021"
 # members = ["src"]
 
 [dependencies]
+lalrpop-util = {version = "0.22.0", features = ["lexer"]}
+
+# Add a build-time dependency on the lalrpop library:
+[build-dependencies]
+lalrpop = "0.22.0"
