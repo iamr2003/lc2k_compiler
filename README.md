@@ -11,7 +11,7 @@ Within this compiler, some additional conventions are imposed upon the instructi
 ## Cimple Language
 Currently, this compiler works on theC-like Cimple language grammar, defined in ``src/cimple.lalrpop``. 
 
-This very simple language only supports on the following operations:
+This very simple language only supports the following operations:
 - Addition expressions
 <!-- - Variable assignment -->
 <!-- - Conditional(if/else) statements -->
