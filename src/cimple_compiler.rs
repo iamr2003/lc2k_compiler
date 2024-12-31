@@ -4,7 +4,8 @@ use crate::lc2k::{AsmLine, Instr, JArgs, LArgs, Offset, RArgs, Reg};
 // some register conventions
 // R0 is always 0
 // R1 is return address
-// R6 and R7 are stratch registers
+// R5 and R6 are stratch registers
+// R7 is stack register
 
 pub fn compile(expr: Expr) -> Vec<AsmLine> {
     let mut out: Vec<AsmLine> = vec![];
