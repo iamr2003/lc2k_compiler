@@ -13,8 +13,8 @@ Currently, this compiler works on theC-like Cimple language grammar, defined in 
 
 This very simple language only supports the following operations:
 - Addition expressions
-<!-- - Variable assignment -->
-<!-- - Conditional(if/else) statements -->
+- Variable assignment(In progress)
+- Conditional(if/else) statements(TODO)
 <!-- - Loops(while/for) -->
 <!-- - Functions -->
 
