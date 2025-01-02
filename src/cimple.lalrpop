@@ -4,10 +4,17 @@ use crate::ast::{Expr, Opcode}; // (0)
 
 grammar;
 
-pub Expr: Box<Expr> = { // (1)
-    Expr ExprOp Factor => Box::new(Expr::Op(<>)), // (2)
+pub Expr: Box<Expr> = {
+    <id:Id> " = " <ex:Expr> => Box::new(Expr::Assign(id.to_string(),ex)),
+    EvalExpr
+}
+
+pub EvalExpr: Box<Expr> = { // (1)
+    EvalExpr ExprOp Factor => Box::new(Expr::Op(<>)), // (2)
+    Id => Box::new(Expr::Var(<>)),
     Factor,
 };
+
 
 ExprOp: Opcode = { // (3)
     "+" => Opcode::Add,
@@ -26,9 +33,12 @@ FactorOp: Opcode = {
 
 Term: Box<Expr> = {
     Num => Box::new(Expr::Number(<>)), // (4)
-    "(" <Expr> ")"
+    "(" <EvalExpr> ")"
 };
 
 Num: i8 = {
     r"[0-9]+" => i8::from_str(<>).unwrap()
 };
+
+Id: String = <s:r"[a-zA-Z][a-zA-Z0-9_]*"> => String::from(s);
+

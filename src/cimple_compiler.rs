@@ -73,5 +73,6 @@ pub fn compile_rec(expr: Expr) -> (Vec<AsmLine>, Vec<AsmLine>) {
             post.extend(right_post);
             (pre, post)
         }
+        default => todo!(),
     }
 }
