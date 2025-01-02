@@ -75,9 +75,13 @@ fn main() {
 
     // println!("{}", lc2k::output_asm_lines(instrs));
 
-    let expr = cimple::ExprParser::new().parse("x = 22 + 33 + 24").unwrap();
+    // run line by line with breaks for now
+    // need to come up with a variable naming and assignment system
+    let block = cimple::BlockParser::new().parse("x = 22 + 33 + 24;\nx = x + 1; x").unwrap();
+    // let expr2 = cimple::ExprParser::new().parse("x = x + 1;").unwrap();
 
-    println!("{:?}", expr);
+    println!("{:?}", block);
+    // println!("{:?}", expr2);
 
     // print!("{}", lc2k::output_asm_lines(compile(*expr).to_vec()));
 }

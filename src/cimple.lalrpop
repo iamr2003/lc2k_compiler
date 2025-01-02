@@ -4,13 +4,18 @@ use crate::ast::{Expr, Opcode}; // (0)
 
 grammar;
 
-pub Expr: Box<Expr> = {
-    <id:Id> " = " <ex:Expr> => Box::new(Expr::Assign(id.to_string(),ex)),
-    EvalExpr
+pub Block: Vec<Box<Expr>> = {
+    <s:Statement> => vec![s],
+    <s:Statement> <b:Block> => {let mut out = vec![s];out.extend(b.clone()); out},
+    <s:Statement> <e:Expr> => {let mut out = vec![s];out.push(e); out},
 }
 
-pub EvalExpr: Box<Expr> = { // (1)
-    EvalExpr ExprOp Factor => Box::new(Expr::Op(<>)), // (2)
+pub Statement: Box<Expr> = {
+    <id:Id> " = " <ex:Expr>";" => Box::new(Expr::Assign(id.to_string(),ex)),
+}
+
+pub Expr: Box<Expr> = { // (1)
+    Expr ExprOp Factor => Box::new(Expr::Op(<>)), // (2)
     Id => Box::new(Expr::Var(<>)),
     Factor,
 };
@@ -33,7 +38,7 @@ FactorOp: Opcode = {
 
 Term: Box<Expr> = {
     Num => Box::new(Expr::Number(<>)), // (4)
-    "(" <EvalExpr> ")"
+    "(" <Expr> ")"
 };
 
 Num: i8 = {
