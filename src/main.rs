@@ -2,7 +2,7 @@ mod ast;
 mod cimple;
 mod cimple_compiler;
 mod lc2k;
-// use cimple_compiler::compile;
+use cimple_compiler::compile;
 use lc2k::{AsmLine, Instr, JArgs, LArgs, Offset, RArgs, Reg};
 
 // figure out how to do proper import later
@@ -77,11 +77,13 @@ fn main() {
 
     // run line by line with breaks for now
     // need to come up with a variable naming and assignment system
-    let block = cimple::BlockParser::new().parse("x = 22 + 33 + 24;\nx = x + 1; x").unwrap();
+    let block = cimple::BlockParser::new()
+        .parse("x = 22 + 33 + 24;\nx = x + 1; x")
+        .unwrap();
     // let expr2 = cimple::ExprParser::new().parse("x = x + 1;").unwrap();
 
-    println!("{:?}", block);
+    // println!("{:?}", block);
     // println!("{:?}", expr2);
 
-    // print!("{}", lc2k::output_asm_lines(compile(*expr).to_vec()));
+    print!("{}", lc2k::output_asm_lines(compile(block).to_vec()));
 }
