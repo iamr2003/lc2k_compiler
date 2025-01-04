@@ -8,6 +8,7 @@ pub Block: Vec<Box<Expr>> = {
     <s:Statement> => vec![s],
     <s:Statement> <b:Block> => {let mut out = vec![s];out.extend(b.clone()); out},
     <s:Statement> <e:Expr> => {let mut out = vec![s];out.push(e); out},
+    <e:Expr>";" => vec![e]
 }
 
 pub Statement: Box<Expr> = {

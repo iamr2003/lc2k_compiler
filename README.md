@@ -18,5 +18,28 @@ This very simple language only supports the following operations:
 <!-- - Loops(while/for) -->
 <!-- - Functions -->
 
+### Examples
+
+**Basic Expressions:**
+#### **`in.cimple`**
+```
+22 + 33 + 24;
+```
+#### **`out.as`**
+```
+         lw      0       1       val_22  
+         add     1       0       6       
+         lw      0       1       val_33  
+         add     1       6       1       
+         add     1       0       6       
+         lw      0       1       val_24  
+         add     1       6       1       
+end      halt    
+val_22   .fill   22      
+val_33   .fill   33      
+val_24   .fill   24      
+```
+
+
 ## (Goal) LLVM
 In the future, making this an LLVM compiler will allow it to target far more languages.

@@ -1,3 +1,6 @@
+use std::env;
+use std::fs;
+use std::io;
 mod ast;
 mod cimple;
 mod cimple_compiler;
@@ -7,83 +10,23 @@ use lc2k::{AsmLine, Instr, JArgs, LArgs, Offset, RArgs, Reg};
 
 // figure out how to do proper import later
 
-fn main() {
-    // yes this representation is a pain to write, might redefine a macro to simplify again
+fn main() -> io::Result<()> {
+    let args: Vec<String> = env::args().collect();
 
-    let instrs: Vec<lc2k::AsmLine> = vec![
-        AsmLine {
-            label: "".to_string(),
-            instr: Instr::Lw(LArgs {
-                reg_a: Reg::R0,
-                reg_b: Reg::R1,
-                addr: Offset::Symbolic("five".to_string()),
-            }),
-        },
-        AsmLine {
-            label: "".to_string(),
-            instr: Instr::Lw(LArgs {
-                reg_a: Reg::R1,
-                reg_b: Reg::R2,
-                addr: Offset::Numeric(3),
-            }),
-        },
-        AsmLine {
-            label: "start".to_string(),
-            instr: Instr::Add(RArgs {
-                reg_a: Reg::R1,
-                reg_b: Reg::R2,
-                dest_reg: Reg::R1,
-            }),
-        },
-        AsmLine {
-            label: "".to_string(),
-            instr: Instr::Beq(LArgs {
-                reg_a: Reg::R0,
-                reg_b: Reg::R1,
-                addr: Offset::Numeric(2),
-            }),
-        },
-        AsmLine {
-            label: "".to_string(),
-            instr: Instr::Beq(LArgs {
-                reg_a: Reg::R0,
-                reg_b: Reg::R0,
-                addr: Offset::Symbolic("start".to_string()),
-            }),
-        },
-        AsmLine {
-            label: "".to_string(),
-            instr: Instr::Noop,
-        },
-        AsmLine {
-            label: "done".to_string(),
-            instr: Instr::Halt,
-        },
-        AsmLine {
-            label: "five".to_string(),
-            instr: Instr::Fill(Offset::Numeric(5)),
-        },
-        AsmLine {
-            label: "neg1".to_string(),
-            instr: Instr::Fill(Offset::Numeric(-1)),
-        },
-        AsmLine {
-            label: "stAddr".to_string(),
-            instr: Instr::Fill(Offset::Symbolic("start".to_string())),
-        },
-    ];
+    if args.len() != 2 {
+        eprintln!("Usage: {} <input_file>", args[0]);
+        std::process::exit(1);
+    }
 
-    // println!("{}", lc2k::output_asm_lines(instrs));
+    let input_file = &args[1];
 
-    // run line by line with breaks for now
-    // need to come up with a variable naming and assignment system
-    let block = cimple::BlockParser::new()
-        .parse("x = 22 + 33 + 24;\nx = x + 1; x")
-        .unwrap();
-    // let expr2 = cimple::ExprParser::new().parse("x = x + 1;").unwrap();
+    let contents = fs::read_to_string(input_file)?;
+
+    let block = cimple::BlockParser::new().parse(&contents).unwrap();
 
     // println!("{:?}", block);
     // println!("{:?}", expr2);
 
     print!("{}", lc2k::output_asm_lines(compile(block).to_vec()));
+    Ok(())
 }
